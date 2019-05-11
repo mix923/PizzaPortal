@@ -33,5 +33,7 @@ namespace PortalPizza.Models
         {
             return new ApplicationDbContext();
         }
+
+        public DbSet<HistoriaZamowienia> HistoriaZamowienia { get; set; }
     }
 }

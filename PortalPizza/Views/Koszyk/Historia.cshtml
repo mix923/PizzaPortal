@@ -1,5 +1,8 @@
-﻿@model IEnumerable<PortalPizza.Models.ZamowienieKoszyk>
-@using Microsoft.AspNet.Identity
+﻿@model IEnumerable<PortalPizza.Models.HistoriaZamowienia>
+@{
+    Layout = null;
+}
+
 @{
     ViewBag.Title = "Koszyk";
     Layout = null;
@@ -56,64 +59,45 @@
     <div class="container body-content" style="background-color:#ffffff; min-height:500px;margin-top:10px;">
 
 
-        <h2>Witaj, @ViewBag.Imie @ViewBag.Nazwisko </h2>
+        <h2>Historia zamówień: @ViewBag.Imie @ViewBag.Nazwisko </h2>
         <table id="cart" class="table table-hover table-condensed" style="background-color:white; ">
             <thead>
                 <tr>
-                    <th style="width:40%">Pizza</th>
-                    <th style="width:10%">Rozmiar</th>
-                    <th style="width:10%">Cena</th>
-                    <th style="width:8%">Ilość</th>
-                    <th style="width:22%" class="text-center">Suma</th>
+                    <th style="width:60%">Opis</th>
+                    <th style="width:10%"></th>
+                    <th style="width:10%">Data</th>
+                    <th style="width:8%"></th>
+                    <th style="width:22%" class="text-center">Suma zaówienia</th>
                     <th style="width:10%"></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var zamowienie in @Model)
                 {
-                    <tr id="koszyk-wiersz-@zamowienie.ZamowienieId">
+                    <tr>
                         <td data-th="Product">
                             <div class="row">
-                                <div class="col-sm-2 hidden-xs" style="margin-top:10px;"><img src="http://placehold.it/100x100" alt="..." class="img-responsive" /></div>
-                                <div class="col-sm-10">
-                                    <h4 class="nomargin">@zamowienie.Pizza.Nazwa</h4>
-                                    <p>@zamowienie.Pizza.Skladniki</p>
+                                <div class="col-sm-2 hidden-xs" ><h4>@zamowienie.HistoriaZamowieniaId</h4> </div>
+                                <div class="col-sm-10 text-center" style="margin-top:10px;">
+                                   @zamowienie.Pizza
+                                    
                                 </div>
                             </div>
                         </td>
-                        <td><p style="margin-top:10px;">@zamowienie.Wielkosc cm </p></td>
-                        <td><p style="margin-top:10px;">@zamowienie.CenaPizza zł</p></td>
+                        <td><p style="margin-top:10px;"> </td>
+                        <td><p style="margin-top:10px;">@zamowienie.Data</p></td>
                         <td>
-                            <input id="koszyk-ilosc-pozycji-@zamowienie.ZamowienieId" type="number" class="form-control text-center" value=@zamowienie.Ilosc readonly style="margin-top:10px;">
+                        
                         </td>
-                        <td class="text-center"><p id="koszyk-ilosc-pozycji-cena-@zamowienie.ZamowienieId" style="margin-top:10px;">@zamowienie.Suma zł</p></td>
+                        <td class="text-center"><p style="margin-top:10px;">@zamowienie.Cena zł</p></td>
                         <td>
-                            <button data-id="@zamowienie.ZamowienieId" class="btn btn-danger btn-sm" style="margin-top:10px;"><span class="glyphicon glyphicon-minus-sign"></span></button>
+                         
                         </td>
                     </tr>
+
                 }
             </tbody>
-            <tfoot>
-                <tr class="visible-xs">
-                    @if (@Model.Sum(a => a.CenaPizza * a.Ilosc) != 0)
-                    {
-                        <td class="text-center"><strong class="schowac">Suma  </strong></td>
-                        <td class="text-center"><strong class="cena-all">@Model.Sum(a => a.CenaPizza * a.Ilosc) zł</strong></td>
-                    }
-                </tr>
-                <tr>
-                    <td><a href="@Url.Action("Historia","Koszyk")" class="btn btn-warning"> Historia Zamowien</a></td>
-                    <td colspan="2" class="hidden-xs"></td>
-                    @if (@Model.Sum(a => a.CenaPizza * a.Ilosc) != 0)
-                    {
-                        <td id="schowac" class="hidden-xs text-center"><strong class="cena-all">@Model.Sum(a => a.CenaPizza * a.Ilosc) zł</strong></td>
-                        <td id="schowac">
-                            <a href="@Url.Action("Koniec","Koszyk")" class="btn btn-success btn-block">Zapłać <i class="fa fa-angle-right"></i></a>
-
-                        </td>
-                    }
-                </tr>
-            </tfoot>
+            
         </table>
 
 
@@ -175,35 +159,7 @@
     @Scripts.Render("~/bundles/bootstrap")
 
 
-    <script>
-        $(function () {
 
-            $(".btn-danger").click(function () {
-                var idPizza = $(this).attr("data-id");
-                $.post("Koszyk/UsunZKoszyka", { "id": idPizza },
-                    function (response) {
-                        if (response.IloscPozycjiUsuwanej == 0) {
-
-                            $('#koszyk-wiersz-' + response.IdPozycjiUsuwanej).fadeOut('slow');
-                        } else {
-                            $('#koszyk-ilosc-pozycji-' + response.IdPozycjiUsuwanej).val(response.IloscPozycjiUsuwanej);
-                            $('#koszyk-ilosc-pozycji-cena-' + response.IdPozycjiUsuwanej).text(response.KoszykZamowienia + " zł");
-                        }
-                        $('.cena-all').text(response.KoszykCena + "zł");
-                        $('#CenaKoszykNaglowek').text(response.KoszykCena + "zł");
-                        if (response.KoszykCena == 0) {
-                            $('.visible-xs').hide();
-                            $('.btn-success').hide();
-                            $('.hidden-xs').hide();
-                            $('.cena-all').hide();
-                            $('.schowac').hide();
-                        }
-
-                    });
-            });
-        });
-    </script>
 
 </body>
 </html>
-

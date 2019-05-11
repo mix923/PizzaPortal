@@ -15,7 +15,7 @@ namespace PortalPizza.Controllers
     {
 
         DBContext context = new DBContext();
-
+        ApplicationDbContext context2 = new ApplicationDbContext();
         // GET: Koszyk
         public ActionResult Index()
         {
@@ -157,11 +157,30 @@ namespace PortalPizza.Controllers
             return koszyk.Sum(a => a.CenaPizza * a.Ilosc);
         }
 
+        public string PobierzPizze()
+        {
+            String pizze = "";
+            List<ZamowienieKoszyk> koszyk = (List<ZamowienieKoszyk>)Session["Koszyk"];
+            if (koszyk == null)
+            {
+                koszyk = new List<ZamowienieKoszyk>();
+            }
+            foreach(ZamowienieKoszyk zamowienie in koszyk)
+            {
+                String jednozamowienie = "";
+                jednozamowienie = zamowienie.Pizza.Nazwa+" "+zamowienie.Rozmiar+" x "+zamowienie.Ilosc+",";
+                pizze += jednozamowienie;
+                
+            }
+            return pizze;
+        }
+
         public ActionResult Koniec()
         {
             var currentUserId = User.Identity.GetUserId();
             var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
             var currentUser = manager.FindById(User.Identity.GetUserId());
+            
             ViewBag.Imie = currentUser.Imie;
             ViewBag.Nazwisko = currentUser.Nazwisko;
             ViewBag.Adres = currentUser.Adres;
@@ -169,9 +188,30 @@ namespace PortalPizza.Controllers
             ViewBag.Telefon = currentUser.Telefon;
             ViewBag.Suma = PobierzIloscKoszyka();
 
+            string data = DateTime.Now.ToString("yyyy-MM-dd");
+
+            HistoriaZamowienia historiaZamowienia = new HistoriaZamowienia()
+            {
+                UserID = currentUserId,
+                Cena = PobierzIloscKoszyka(),
+                Data = data,
+                Pizza = PobierzPizze(),
+
+            };
+
+            context2.HistoriaZamowienia.Add(historiaZamowienia);
+            context2.SaveChanges();
             Session["Koszyk"] = null;
 
             return View();
+        }
+
+
+        public ActionResult Historia()
+        {
+            var currentUserId = User.Identity.GetUserId();
+            List<HistoriaZamowienia> hisotria = context2.HistoriaZamowienia.Where(z => z.UserID == currentUserId).ToList();
+            return View(hisotria);
         }
     }
 }

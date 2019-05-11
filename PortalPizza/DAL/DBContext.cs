@@ -17,6 +17,7 @@ namespace PortalPizza.DAL
 
         public DbSet<Pizza> Pizza { get; set; }
         public DbSet<Kategoria> Kategoria { get; set; }
+        public DbSet<HistoriaZamowienia> HistoriaZamowienia { get; set; }
 
     }
 }

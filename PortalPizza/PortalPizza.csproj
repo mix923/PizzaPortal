@@ -234,8 +234,21 @@
     <Compile Include="Migrations\201904151137391_Dodanie.Designer.cs">
       <DependentUpon>201904151137391_Dodanie.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201905110834510_dodaniehistorizamowien.cs" />
+    <Compile Include="Migrations\201905110834510_dodaniehistorizamowien.Designer.cs">
+      <DependentUpon>201905110834510_dodaniehistorizamowien.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905110849121_blad.cs" />
+    <Compile Include="Migrations\201905110849121_blad.Designer.cs">
+      <DependentUpon>201905110849121_blad.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905110958004_dodanienowe.cs" />
+    <Compile Include="Migrations\201905110958004_dodanienowe.Designer.cs">
+      <DependentUpon>201905110958004_dodanienowe.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\HistoriaZamowienia.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Kategoria.cs" />
     <Compile Include="Models\Klient.cs" />
@@ -348,6 +361,7 @@
     <Content Include="Views\Pizza\Detal.cshtml" />
     <Content Include="Views\Koszyk\Index.cshtml" />
     <Content Include="Views\Koszyk\Koniec.cshtml" />
+    <Content Include="Views\Koszyk\Historia.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -371,6 +385,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201904151137391_Dodanie.resx">
       <DependentUpon>201904151137391_Dodanie.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905110834510_dodaniehistorizamowien.resx">
+      <DependentUpon>201905110834510_dodaniehistorizamowien.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905110849121_blad.resx">
+      <DependentUpon>201905110849121_blad.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905110958004_dodanienowe.resx">
+      <DependentUpon>201905110958004_dodanienowe.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
