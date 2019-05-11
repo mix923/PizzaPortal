@@ -1,0 +1,209 @@
+﻿@model IEnumerable<PortalPizza.Models.ZamowienieKoszyk>
+@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "Koszyk";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title — pizza przez internet</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .fa {
+            font-size: 48px;
+            color: #ffffff;
+            margin-right: 5px;
+        }
+
+        .fa-angle-right {
+            font-size: 16px;
+        }
+
+        .fa-angle-left {
+            font-size: 16px;
+        }
+    </style>
+
+</head>
+<body style="padding-bottom:0px; background-color:#454545;">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("PizzaOnline.pl", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Kategorie", "Index", "Kategoria")</li>
+                    <li>@Html.ActionLink("Pizze", "Index", "Pizza")</li>
+                    <li>@Html.ActionLink("Kontakt", "Contact", "Home")</li>
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content" style="background-color:#ffffff; min-height:500px;margin-top:10px;">
+
+
+        <h2>Witaj, @ViewBag.Imie @ViewBag.Nazwisko </h2>
+        <table id="cart" class="table table-hover table-condensed" style="background-color:white; ">
+            <thead>
+                <tr>
+                    <th style="width:40%">Pizza</th>
+                    <th style="width:10%">Rozmiar</th>
+                    <th style="width:10%">Cena</th>
+                    <th style="width:8%">Ilość</th>
+                    <th style="width:22%" class="text-center">Suma</th>
+                    <th style="width:10%"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var zamowienie in @Model)
+                {
+                    <tr id="koszyk-wiersz-@zamowienie.ZamowienieId">
+                        <td data-th="Product">
+                            <div class="row">
+                                <div class="col-sm-2 hidden-xs" style="margin-top:10px;"><img src="http://placehold.it/100x100" alt="..." class="img-responsive" /></div>
+                                <div class="col-sm-10">
+                                    <h4 class="nomargin">@zamowienie.Pizza.Nazwa</h4>
+                                    <p>@zamowienie.Pizza.Skladniki</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td><p style="margin-top:10px;">@zamowienie.Wielkosc cm </p></td>
+                        <td><p style="margin-top:10px;">@zamowienie.CenaPizza zł</p></td>
+                        <td>
+                            <input id="koszyk-ilosc-pozycji-@zamowienie.ZamowienieId" type="number" class="form-control text-center" value=@zamowienie.Ilosc readonly style="margin-top:10px;">
+                        </td>
+                        <td class="text-center"><p id="koszyk-ilosc-pozycji-cena-@zamowienie.ZamowienieId" style="margin-top:10px;">@zamowienie.Suma zł</p></td>
+                        <td>
+                            <button data-id="@zamowienie.ZamowienieId" class="btn btn-danger btn-sm" style="margin-top:10px;"><span class="glyphicon glyphicon-minus-sign"></span></button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr class="visible-xs">
+                    @if (@Model.Sum(a => a.CenaPizza * a.Ilosc) != 0)
+                    {
+                        <td class="text-center"><strong class="schowac">Suma  </strong></td>
+                        <td class="text-center"><strong class="cena-all">@Model.Sum(a => a.CenaPizza * a.Ilosc) zł</strong></td>
+                    }
+                </tr>
+                <tr>
+                    <td><a href="#" class="btn btn-warning"><i class="fa fa-angle-left"></i> Powróć</a></td>
+                    <td colspan="2" class="hidden-xs"></td>
+                    @if (@Model.Sum(a => a.CenaPizza * a.Ilosc) != 0)
+                    {
+                        <td id="schowac" class="hidden-xs text-center"><strong class="cena-all">@Model.Sum(a => a.CenaPizza * a.Ilosc) zł</strong></td>
+                        <td id="schowac">
+                            <a href="@Url.Action("Koniec","Koszyk")" class="btn btn-success btn-block">Zapłać <i class="fa fa-angle-right"></i></a>
+
+                        </td>
+                    }
+                </tr>
+            </tfoot>
+        </table>
+
+
+    </div>
+    <footer class="footer" style="background-color:#2c2c2c;color:white; padding-bottom:20px;margin-top:10px;">
+        <div class="row" style="height:25px;width:100% ;background-color:#1f1f1f;margin:0px;">
+        </div>
+        <div class="container">
+            <div style="height:5px;width:100% ;background-color:#373737; margin-top:20px; ">
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="headline">
+                        <h3>O NAS</h3>
+                    </div>
+                    <hr />
+                    <div class="content">
+                        <p>
+                            <h4>PizzaOnline.pl</h4>
+                            PizzaOnline.pl to serwis do zamawiania jedzenia online. Siedząc wygodnie na kanapie w domu zastanów się, na co dziś masz ochotę
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="headline">
+                        <h3>KONTAKT</h3>
+                    </div>
+                    <hr />
+                    <div class="content">
+                        <p>
+                            Rzeszów, 35-310<br />
+                            aleja Tadeusza Rejtana 16C<br />
+                            Numer: 573 452 321<br />
+                            Email: pizza@wp.pl<br />
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="headline">
+                        <h3>MEDIA</h3>
+                    </div>
+                    <hr />
+                    <div class="content">
+                        <i class="fa fa-facebook-square"></i>
+                        <i class="fa fa-twitter-square"></i>
+                        <i class="fa fa-instagram"></i>
+                        <i class="fa fa-youtube-square"></i>
+                    </div>
+                </div>
+            </div>
+            <div style="height:5px;width:100% ;background-color:#373737; margin-top:20px;">
+            </div>
+
+        </div>
+    </footer>
+
+    <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+
+
+    <script>
+        $(function () {
+
+            $(".btn-danger").click(function () {
+                var idPizza = $(this).attr("data-id");
+                $.post("Koszyk/UsunZKoszyka", { "id": idPizza },
+                    function (response) {
+                        if (response.IloscPozycjiUsuwanej == 0) {
+
+                            $('#koszyk-wiersz-' + response.IdPozycjiUsuwanej).fadeOut('slow');
+                        } else {
+                            $('#koszyk-ilosc-pozycji-' + response.IdPozycjiUsuwanej).val(response.IloscPozycjiUsuwanej);
+                            $('#koszyk-ilosc-pozycji-cena-' + response.IdPozycjiUsuwanej).text(response.KoszykZamowienia + " zł");
+                        }
+                        $('.cena-all').text(response.KoszykCena + "zł");
+                        $('#CenaKoszykNaglowek').text(response.KoszykCena + "zł");
+                        if (response.KoszykCena == 0) {
+                            $('.visible-xs').hide();
+                            $('.btn-success').hide();
+                            $('.hidden-xs').hide();
+                            $('.cena-all').hide();
+                            $('.schowac').hide();
+                        }
+
+                    });
+            });
+        });
+    </script>
+
+</body>
+</html>
+

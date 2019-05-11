@@ -1,0 +1,127 @@
+﻿
+@{
+    ViewBag.Title = "Podsumowanie";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title — pizza przez internet</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <style>
+        .fa {
+            font-size: 48px;
+            color: #ffffff;
+            margin-right:5px;
+        } 
+    </style>
+
+</head>
+<body style="padding-bottom:0px;">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("PizzaOnline.pl", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Kategorie", "Index", "Kategoria")</li>
+                    <li>@Html.ActionLink("Pizze", "Index", "Pizza")</li>
+                    <li>@Html.ActionLink("Kontakt", "Contact", "Home")</li>
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content" style="color:#ffffff; width:100%;height:100%;background-image:url('/Content/Image/BackgroundKoniec.jpg');background-position: center;background-repeat: no-repeat; background-size: cover;  ">
+        <div style="background-image:url('~/Content/Image/BackgroundKoniec.jpg');">
+            <div style="text-align:center; padding:70px;">
+                <h2>Dziękujemy za złożenie zamówienia</h2>
+                <h4>Zamowienie zostanie dostarczone do:</h4>
+                <div>
+                    Imie: @ViewBag.Imie
+                    </br>
+                    Nazwisko: @ViewBag.Nazwisko
+                    </br>
+                    Adres: @ViewBag.Adres
+                    </br>
+                    Telefon: @ViewBag.Telefon
+                    </br>
+                    Email: @ViewBag.Email
+                    </br>
+                </div>
+                <h4>Proszę przygtować gotówkę: @ViewBag.Suma zł</h4>
+                <h3>Szmacznego życzy PizzaOnline.pl</h3>
+            </div>
+        </div>
+
+    </div>
+    <footer class="footer" style="background-color:#2c2c2c;color:white; padding-bottom:20px;">
+        <div class="row" style="height:25px;width:100% ;background-color:#1f1f1f;margin:0px;">
+        </div>
+        <div class="container">
+            <div style="height:5px;width:100% ;background-color:#373737; margin-top:20px; ">
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="headline">
+                        <h3>O NAS</h3>
+                    </div>
+                    <hr />
+                    <div class="content">
+                        <p>
+                            <h4>PizzaOnline.pl</h4>
+                            PizzaOnline.pl to serwis do zamawiania jedzenia online. Siedząc wygodnie na kanapie w domu zastanów się, na co dziś masz ochotę
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="headline">
+                        <h3>KONTAKT</h3>
+                    </div>
+                    <hr />
+                    <div class="content">
+                        <p>
+                            Rzeszów, 35-310<br />
+                            aleja Tadeusza Rejtana 16C<br />
+                            Numer: 573 452 321<br />
+                            Email: pizza@wp.pl<br />
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="headline">
+                        <h3>MEDIA</h3>
+                    </div>
+                    <hr />
+                    <div class="content">
+                        <i class="fa fa-facebook-square" ></i>
+                        <i class="fa fa-twitter-square" ></i>
+                        <i class="fa fa-instagram" ></i>
+                        <i class="fa fa-youtube-square" ></i>
+                    </div>
+                </div>
+            </div>
+            <div style="height:5px;width:100% ;background-color:#373737; margin-top:20px;">
+            </div>
+
+        </div>
+    </footer>
+
+    <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+
+</body>
+</html>

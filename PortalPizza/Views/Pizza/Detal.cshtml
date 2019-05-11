@@ -1,0 +1,90 @@
+﻿@model PortalPizza.Models.Pizza
+@{
+    ViewBag.Title = "Detale";
+}
+
+<div class="row" style="background-color:aliceblue; margin-top:10px;">
+    <div class="span5" style="float:left;">
+        <img src="~/Content/Image/Polska.png" class="img-polaroid" alt="Lenovo Desktop" style="width:600px;height:400px;margin:10px;">
+    </div>
+    <div class="span7">
+        <h1>@Model.Nazwa</h1>
+        <h4 class="muted">Rodzaj pizzy: @Model.Kategoria.Nazwa</h4>
+        <hr>
+        <p>@Model.Opis</p>
+        <hr>
+        
+        <p class="muted">W cenę wliczony jest koszt dostawy. Darmowa dostawa do domu.</p>
+        <br>
+        <p>
+            @if (Request.IsAuthenticated)
+            {
+                <a href="@Url.Action("DodajDoKoszyka", "Koszyk", new { id = @Model.PizzaId, wielkosc = 35, rozmiar = "mala" })" class="btn btn-info btn-large">
+                    Kup 35cm
+                </a>
+                <a href="@Url.Action("DodajDoKoszyka", "Koszyk", new { id = @Model.PizzaId, wielkosc = 45, rozmiar = "srednia" })" class="btn btn-info btn-large">
+                    Kup 45cm
+                </a>
+                <a href="@Url.Action("DodajDoKoszyka", "Koszyk", new { id = @Model.PizzaId, wielkosc = 50, rozmiar = "duza" })" class="btn btn-info btn-large">
+                    Kup 50cm
+                </a>
+            }
+            else
+            {
+                <a href="@Url.Action( "Login","Account")" class="btn btn-info btn-large">
+                    Kup 35cm
+                </a>
+                <a href="@Url.Action( "Login","Account")" class="btn btn-info btn-large">
+                    Kup 45cm
+                </a>
+                <a href="@Url.Action( "Login","Account")" class="btn btn-info btn-large">
+                    Kup 50cm
+                </a>
+            }
+
+        </p>
+    </div>
+</div>
+<div class="row product-info" style="background-color:aliceblue;">
+    <div class="span12">
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#tab-1">Cena</a></li>
+            <li><a data-toggle="tab" href="#tab-2">Składniki</a></li>
+        </ul>
+        <div class="tab-content">
+            <div id="tab-1" class="tab-pane fade in active">
+                <table class="table table-striped">
+                    <tbody>
+                        <tr>
+                            <th>35cm</th>
+                            <td>@(Model.Cena - 3) zł</td>
+                        </tr>
+                        <tr>
+                            <th>45cm</th>
+                            <td>@(Model.Cena -2) zł</td>
+                        </tr>
+                        <tr>
+                            <th>50cm</th>
+                            <td>@Model.Cena  zł</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="tab-2" class="tab-pane fade">
+                <table class="table table-striped">
+                    <tbody>
+                        @foreach (var skladnik in Model.Skladniki.Split(','))
+                        {
+                            <tr>
+                                <td>@skladnik</td>
+                            </tr>
+                        }
+                       
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+   
+
